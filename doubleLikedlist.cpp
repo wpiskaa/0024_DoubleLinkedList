@@ -54,8 +54,14 @@ class DoubleLinkedList
 
              //Step 7: START = newNode
              START = newNode;
-             return;
+             
         }
+
+        //Insert in between node
+        //Step 8: Locate potition for insertion
+        node *current = START;
+        while (current->next !=NULL && current->next->nomMhs < nim)
+    
 
     }
 
