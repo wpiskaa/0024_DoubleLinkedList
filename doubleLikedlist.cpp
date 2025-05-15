@@ -31,5 +31,9 @@ class DoubleLinkedList
         // Step 1: Allcate memory for new node
         node *newNode = new node();
 
+
+        // Step 2: Assign value to the data fields
+        newNode->nomMhs = nim;
+
     }
-}
+};
