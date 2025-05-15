@@ -155,7 +155,13 @@ class DoubleLinkedList
 
     void revtraverse()
     {
-        
+
+        if (START == NULL)
+        {
+            cout << "\nList empty" << endl;
+            return;
+        }
+
     }
 
 };
