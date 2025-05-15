@@ -2,191 +2,146 @@
 #include <string>
 using namespace std;
 
-class node
-{
-    public:
+class node {
+public:
     int nomMhs;
     node *next;
     node *prev;
 };
 
-class DoubleLinkedList
-{
-    private:
+class DoubleLinkedList {
+private:
     node *START;
 
-    public:
-    DoubleLinkedList()
-    {
+public:
+    DoubleLinkedList() {
         START = NULL;
-
     }
-    void addNode()
-    {
+
+    void addNode() {
         int nim;
-        string nm;
-        cout << "\nEnter the roll number of the student";
+        cout << "\nEnter the roll number of the student: ";
         cin >> nim;
 
-        // Step 1: Allcate memory for new node
         node *newNode = new node();
-
-
-        // Step 2: Assign value to the data fields
         newNode->nomMhs = nim;
 
-        // Step 3: Insert at beginning if list is empty or nim is smallest
-        if (START == NULL || nim <= START->nomMhs)
-        {
-            if (START != NULL && nim == START->nomMhs)
-            {
+        // Insert di awal
+        if (START == NULL || nim <= START->nomMhs) {
+            if (START != NULL && nim == START->nomMhs) {
                 cout << "\nDuplicate number not allowed" << endl;
+                delete newNode;
+                return;
             }
-            // Step 4: newNode.next = START
             newNode->next = START;
-
-            //Step 5: start.prev = newNode (if start exists)
             if (START != NULL)
-            START->prev = newNode;
-
-            //Step 6: newNode.prev = NULL
-             newNode->prev =  NULL;
-
-             //Step 7: START = newNode
-             START = newNode;
-             
+                START->prev = newNode;
+            newNode->prev = NULL;
+            START = newNode;
+            return;
         }
 
-        //Insert in between node
-        //Step 8: Locate potition for insertion
+        // Insert di tengah atau akhir
         node *current = START;
-        while (current->next !=NULL && current->next->nomMhs < nim)
-    {
-        current = current ->next;
+        while (current->next != NULL && current->next->nomMhs < nim) {
+            current = current->next;
+        }
+
+        if (current->next != NULL && nim == current->next->nomMhs) {
+            cout << "\nDuplicate roll number not allowed" << endl;
+            delete newNode;
+            return;
+        }
+
+        newNode->next = current->next;
+        newNode->prev = current;
+
+        if (current->next != NULL)
+            current->next->prev = newNode;
+
+        current->next = newNode;
     }
 
-    if (current->next !=NULL && nim == current->next->nomMhs)
-    {
-        cout << "\nDuplicate roll number not allowed" << endl;
-        return;
-    }
-
-    //Step 9: insert between current and current->next
-    newNode->next = current->next; //Step 9a
-    newNode->prev = current; // Step 9b
-
-    //Insert last node
-    if (current->next != NULL)
-        current->next->prev = newNode; //Step 9c 
-
-        current ->next = newNode; //Step 9d
-    }
-
-    void hapus()
-    {
-        if (START == NULL)
-        {
+    void hapus() {
+        if (START == NULL) {
             cout << "\nList is empty" << endl;
             return;
         }
 
-        cout << "\nEnter the roll number of the student whose record is to be deleted";
         int rollNo;
+        cout << "\nEnter the roll number of the student to delete: ";
         cin >> rollNo;
 
         node *current = START;
+        while (current != NULL && current->nomMhs != rollNo) {
+            current = current->next;
+        }
 
-
-        //step 1: treverse the list to find the node
-        while (current != NULL && current->nomMhs != rollNo)
-        current = current->next;
-
-        if (current == NULL)
-        {
+        if (current == NULL) {
             cout << "Record not found" << endl;
             return;
         }
 
-        //Step 2: if node is at the beginning
-        if (current ==START)
-        {
-            START = current->next; //Step 2a: START = START.next
+        if (current == START) {
+            START = current->next;
             if (START != NULL)
-            START->prev = NULL; //Step 2b : START.prev = NULL
-        }
-        else{
-            //Step 3: LInk previous node to the next of current
+                START->prev = NULL;
+        } else {
             current->prev->next = current->next;
-
-            //Step 4: if current is not the last node
             if (current->next != NULL)
                 current->next->prev = current->prev;
         }
 
-        //Step 5: Delate the node
         delete current;
-        cout << "Record with roll number " << rollNo << "Deleted" << endl;
+        cout << "Record with roll number " << rollNo << " deleted" << endl;
     }
 
-    void traverse()
-    {
-        if (START == NULL)
-        {
+    void traverse() {
+        if (START == NULL) {
             cout << "\nList is empty" << endl;
             return;
         }
 
-        //step 1: Mark first node as currentNode
         node *currentNode = START;
-
-        //step2: Repeat until currentNode == NULL
-        cout << "\nRecord in ascending order of roll number are:\n";
-        int i = 0;
-        while (currentNode != NULL)
-        {
-
-            cout << i + 1 << ". " << currentNode->nomMhs << " " << endl;
-
-            //step3 : move to next node
+        cout << "\nRecords in ascending order of roll number:\n";
+        int i = 1;
+        while (currentNode != NULL) {
+            cout << i << ". " << currentNode->nomMhs << endl;
             currentNode = currentNode->next;
             i++;
         }
     }
 
-    void revtraverse()
-    {
-
-        if (START == NULL)
-        {
-            cout << "\nList empty" << endl;
+    void revtraverse() {
+        if (START == NULL) {
+            cout << "\nList is empty" << endl;
             return;
         }
 
-        //Step 1: Move to last node
+        // Hitung jumlah node
+        int count = 0;
+        node *temp = START;
+        while (temp != NULL) {
+            count++;
+            temp = temp->next;
+        }
+
+        // Pindah ke node terakhir
         node *currentNode = START;
-        int i = 0;
-        while (currentNode->next != NULL)
-        {
+        while (currentNode->next != NULL) {
             currentNode = currentNode->next;
-            i++;
         }
 
-        //Step 2:  Traverse backward
-        cout << "\nRecord is descending order of roll number are:\n";
-        while (currentNode != NULL)
-        {
-            cout << i = 1 << ". "<< currentNode->nomMhs << " " << endl;
-
+        cout << "\nRecords in descending order of roll number:\n";
+        while (currentNode != NULL) {
+            cout << count << ". " << currentNode->nomMhs << endl;
             currentNode = currentNode->prev;
-            i++;
+            count--;
         }
-
     }
 
-    void searchData()
-    {
-        if (START == NULL)
-        {
+    void searchData() {
+        if (START == NULL) {
             cout << "\nList is empty" << endl;
             return;
         }
@@ -196,35 +151,24 @@ class DoubleLinkedList
         cin >> rollNo;
 
         node *current = START;
+        while (current != NULL && current->nomMhs != rollNo) {
+            current = current->next;
+        }
 
-        //Step 1: traverse to find matching roll number 
-        while (current != NULL && current->nomMhs != rollNo)
-        current = current->next;
-
-        //Step 2: output result
-        if (current == NULL)
-        {
+        if (current == NULL) {
             cout << "Record not found\n";
-        }
-        else 
-        {
+        } else {
             cout << "Record found\n";
-            cout << "Roll number: " << current ->nomMhs << endl;
+            cout << "Roll number: " << current->nomMhs << endl;
         }
-
     }
-
 };
 
-int main()
-{
+int main() {
     DoubleLinkedList list;
     char choice;
 
-    do
-    {
-    
-
+    do {
         cout << "\nMenu:\n";
         cout << "1. Add Record\n";
         cout << "2. Delete Record\n";
@@ -233,36 +177,41 @@ int main()
         cout << "5. Search Record\n";
         cout << "6. Exit\n";
         cout << "Enter your choice: ";
-
         cin >> choice;
 
-        switch (choice)
-        {
+        switch (choice) {
             case '1':
-            list.addNode();
-            break;
+                list.addNode();
+                break;
             case '2':
-            list.hapus();
-            break;
+                list.hapus();
+                break;
             case '3':
-            list.traverse();
-            break;
+                list.traverse();
+                break;
             case '4':
-            list.revtraverse();
-            break;
+                list.revtraverse();
+                break;
             case '5':
-            list.searchData();
+                list.searchData();
+                break;
             case '6':
-            return 0;
+                return 0;
             default:
-            cout << "Invalid option\n";
+                cout << "Invalid option\n";
         }
-        cout <<"\nPress Enter to continue...";
+
+        cout << "\nPress Enter to continue...";
         cin.ignore();
         cin.get();
-        cout << endl;
-        system ("clear");     
-    }while (choice != '6');
-    
-    
+
+        #ifdef _WIN32
+            system("cls");
+        #else
+            system("clear");
+        #endif
+
+    } while (choice != '6');
+
+    return 0;
 }
