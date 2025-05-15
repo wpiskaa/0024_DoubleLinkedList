@@ -162,6 +162,56 @@ class DoubleLinkedList
             return;
         }
 
+        //Step 1: Move to last node
+        node *currentNode = START;
+        int i = 0;
+        while (currentNode->next != NULL)
+        {
+            currentNode = currentNode->next;
+            i++;
+        }
+
+        //Step 2:  Traverse backward
+        cout << "\nRecord is descending order of roll number are:\n";
+        while (currentNode != NULL)
+        {
+            cout << i = 1 << ". "<< currentNode->nomMhs << " " << endl;
+
+            currentNode = currentNode->prev;
+            i++;
+        }
+
+    }
+
+    void searchData()
+    {
+        if (START == NULL)
+        {
+            cout << "\nList is empty" << endl;
+            return;
+        }
+
+        int rollNo;
+        cout << "\nEnter the roll number to search: ";
+        cin >> rollNo;
+
+        node *current = START;
+
+        //Step 1: traverse to find matching roll number 
+        while (current != NULL && current->nomMhs != rollNo)
+        current = current->next;
+
+        //Step 2: output result
+        if (current == NULL)
+        {
+            cout << "Record not found\n";
+        }
+        else 
+        {
+            cout << "Record found\n";
+            cout << "Roll number: " << current ->nomMhs << endl;
+        }
+
     }
 
 };
