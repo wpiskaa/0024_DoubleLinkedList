@@ -61,8 +61,15 @@ class DoubleLinkedList
         //Step 8: Locate potition for insertion
         node *current = START;
         while (current->next !=NULL && current->next->nomMhs < nim)
-    
+    {
+        current = current ->next;
+    }
 
+    if (current->next !=NULL && nim == current->next->nomMhs)
+    {
+        cout << "\nDuplicate roll number not allowed" << endl;
+        return;
+    }
     }
 
 };
